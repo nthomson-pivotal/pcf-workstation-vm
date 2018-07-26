@@ -1,0 +1,109 @@
+{
+  "variables": {
+    "vm_name": "pcf-workstation",
+    "cpu": "2",
+    "ram_size": "8192",
+    "disk_size": "100000",
+    "iso_url": "http://releases.ubuntu.com/releases/16.04/ubuntu-16.04.4-server-amd64.iso",
+    "iso_checksum_type": "sha1",
+    "iso_checksum": "ee834fbeb94cc55972b38caafa2029c29625e2e8",
+    "username" : "pivotal",
+    "password" : "pivotal",
+    "pivnet_token" : ""
+  },
+  "builders": [
+  {
+    "type": "virtualbox-iso",
+    "boot_command": [
+      "<enter><wait><f6><esc><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs>",
+      "<bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs>",
+      "<bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs>",
+      "<bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs>",
+      "/install/vmlinuz<wait>",
+      " auto<wait>",
+      " console-setup/ask_detect=false<wait>",
+      " console-setup/layoutcode=us<wait>",
+      " console-setup/modelcode=pc105<wait>",
+      " debconf/frontend=noninteractive<wait>",
+      " debian-installer=en_US<wait>",
+      " fb=false<wait>",
+      " initrd=/install/initrd.gz<wait>",
+      " kbd-chooser/method=us<wait>",
+      " keyboard-configuration/layout=USA<wait>",
+      " keyboard-configuration/variant=USA<wait>",
+      " locale=en_US<wait>",
+      " netcfg/get_domain=vm<wait>",
+      " netcfg/get_hostname=pivotal<wait>",
+      " grub-installer/bootdev=/dev/sda<wait>",
+      " noapic<wait>",
+      " preseed/url=http://{{ .HTTPIP }}:{{ .HTTPPort }}/preseed.cfg",
+      " -- <wait>",
+      "<enter><wait>"
+    ],
+    "boot_wait": "10s",
+    "disk_size": "{{user `disk_size`}}",
+    "guest_os_type": "Ubuntu_64",
+    "headless": true,
+    "http_directory": "http",
+    "iso_url": "{{user `iso_url`}}",
+    "iso_checksum_type": "{{user `iso_checksum_type`}}",
+    "iso_checksum": "{{user `iso_checksum`}}",
+    "ssh_username": "{{user `username`}}",
+    "ssh_password": "{{user `password`}}",
+    "ssh_wait_timeout": "20m",
+    "ssh_pty": true,
+    "shutdown_command": "sudo -S shutdown -P now",
+    "guest_additions_mode": "disabled",
+    "vm_name": "{{user `vm_name`}}-{{timestamp}}",
+    "vboxmanage": [
+      [
+        "modifyvm",
+        "{{.Name}}",
+        "--memory",
+        "{{user `ram_size`}}"
+      ],
+      [
+        "modifyvm",
+        "{{.Name}}",
+        "--cpus",
+        "{{user `cpu`}}"
+      ]
+    ]
+  }],
+  "provisioners": [
+    {
+      "type": "shell",
+      "execute_command": "echo '{{user `username`}}' | {{.Vars}} sudo -S -E bash '{{.Path}}'",
+      "environment_vars": [
+        "JUMPBOX_USERNAME={{user `username`}}"
+      ],
+      "script": "scripts/setup.sh"
+    },
+    {
+      "type": "shell",
+      "environment_vars": [
+        "JUMPBOX_USERNAME={{user `username`}}",
+        "PIVNET_TOKEN={{user `pivnet_token`}}"
+      ],
+      "scripts": [
+        "scripts/desktop.sh",
+        "scripts/tools.sh",
+        "scripts/docker.sh",
+        "scripts/nginx.sh",
+        "scripts/platforms.sh",
+        "scripts/chrome.sh",
+        "scripts/concourse.sh",
+        "scripts/projects.sh",
+        "scripts/pivotal-bits.sh"
+      ]
+    },
+    {
+      "type": "shell",
+      "execute_command": "echo '{{user `username`}}' | {{.Vars}} sudo -S -E bash '{{.Path}}'",
+      "environment_vars": [
+        "JUMPBOX_USERNAME={{user `username`}}"
+      ],
+      "script": "scripts/cleanup.sh"
+    }
+  ]
+}
