@@ -1,6 +1,6 @@
 # PCF Workstation VM
 
-This repository contains code to create a pre-configured virtual machine that can be used when working with PCF. The main expected use-case for this VM is to provide a combined jumpbox and utility server for proof-of-concept exercises when operating on customer premises.
+This repository contains code to create a pre-configured virtual machine that can be used when working with Pivotal Cloud Foundry. The main expected use-case for this VM is to provide a combined jumpbox and utility server for proof-of-concept exercises when operating on customer premises.
 
 Note: This code does not provide explicit access to any Pivotal assets that would otherwise be obtained via Pivotal Network. All components installed on the VM are publicly accessible via package managers, GitHub repositories or other open distribution networks.
 
@@ -9,7 +9,7 @@ Note: This code does not provide explicit access to any Pivotal assets that woul
 A list of the key characteristics of this VM:
 
 - Ubuntu 16.04 LTS Server
-- Desktop and XRDP server
+- Desktop and remote desktop server
 - Docker CE, Docker Compose and Docker Registry
 - Java development environment, including Spring Tool Suite
 - Visual Studio Code
@@ -29,6 +29,11 @@ A number of languages and platforms are pre-installed:
 - Golang
 - NodeJS
 - .NET Core SDK 2.X
+
+Additionally the following development tools are available:
+
+- Spring Tool Suite
+- Visual Studio Code
 
 ## Command-line Tools
 
