@@ -53,8 +53,9 @@
     "ssh_wait_timeout": "20m",
     "ssh_pty": true,
     "shutdown_command": "sudo -S shutdown -P now",
-    "guest_additions_mode": "disabled",
+    "guest_additions_mode": "disable",
     "vm_name": "{{user `vm_name`}}-{{timestamp}}",
+    "format": "ova",
     "vboxmanage": [
       [
         "modifyvm",
