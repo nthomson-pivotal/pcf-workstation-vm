@@ -89,7 +89,7 @@ sudo systemctl start concourse-web concourse-worker
 sudo systemctl enable concourse-web concourse-worker
 
 # Install configuration template for Nginx proxy
-sudo bash -c 'cat > /etc/nginx/sites-available' <<EOF
+sudo bash -c 'cat > /etc/nginx/sites-available/concourse.conf' <<EOF
 server {
   server_name concourse.yourdomain.com;
   location / {
@@ -97,6 +97,24 @@ server {
   }
 }
 EOF
+
+# Wait until Concourse available
+attempt_counter=0
+max_attempts=10
+
+until $(curl --output /dev/null --silent --head --fail http://127.0.0.1:8080); do
+    if [ ${attempt_counter} -eq ${max_attempts} ];then
+      # curl one more time to get error for debugging
+      curl http://127.0.0.1:8080
+
+      echo "Error: Max attempts reached contacting Concourse"
+      exit 1
+    fi
+
+    printf '.'
+    attempt_counter=$(($attempt_counter+1))
+    sleep 20
+done
 
 # Provide default target to fly
 fly --target default login --team-name main \
