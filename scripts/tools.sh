@@ -26,8 +26,14 @@ sudo apt install -y \
     terminator
 
 
+
+# Customize Terminator
+sed -i 's/#force_color_prompt=yes/force_color_prompt=yes/g' ~/.bashrc
+mkdir -p ~/.config/terminator
+cp /tmp/assets/terminator.config ~/.config/terminator/config
+
 # Terminator shortcut
-gsettings set com.canonical.Unity.Launcher favorites "$(gsettings get com.canonical.Unity.Launcher favorites | sed "s/]/,'terminator.desktop']/")"
+dbus-launch gsettings set com.canonical.Unity.Launcher favorites "$(dbus-launch gsettings get com.canonical.Unity.Launcher favorites | sed "s/]/,'terminator.desktop']/")"
 
 # Install CF CLI
 curl -L "https://packages.cloudfoundry.org/stable?release=linux64-binary&source=github" | tar -zx && \
@@ -37,22 +43,22 @@ curl -L "https://packages.cloudfoundry.org/stable?release=linux64-binary&source=
 sudo curl -o /usr/share/bash-completion/completions/cf https://raw.githubusercontent.com/cloudfoundry/cli/master/ci/installers/completion/cf
 
 # Install OM CLI
-wget https://github.com/pivotal-cf/om/releases/download/$OM_VERSION/om-linux && \
+wget -q https://github.com/pivotal-cf/om/releases/download/$OM_VERSION/om-linux && \
   sudo mv om-linux /usr/local/bin/om && \
   sudo chmod +x /usr/local/bin/om
 
 # Install Pivnet CLI
-wget https://github.com/pivotal-cf/pivnet-cli/releases/download/v$PIVNET_CLI_VERSION/pivnet-linux-amd64-$PIVNET_CLI_VERSION && \
+wget -q https://github.com/pivotal-cf/pivnet-cli/releases/download/v$PIVNET_CLI_VERSION/pivnet-linux-amd64-$PIVNET_CLI_VERSION && \
   sudo mv pivnet-linux-amd64-$PIVNET_CLI_VERSION /usr/local/bin/pivnet && \
   sudo chmod +x /usr/local/bin/pivnet
 
 # Install fly CLI
-wget https://github.com/concourse/concourse/releases/download/v$FLY_VERSION/fly_linux_amd64 && \
+wget -q https://github.com/concourse/concourse/releases/download/v$FLY_VERSION/fly_linux_amd64 && \
   sudo mv fly_linux_amd64 /usr/local/bin/fly && \
   sudo chmod +x /usr/local/bin/fly
 
 # Install Terraform
-wget -O terraform.zip https://releases.hashicorp.com/terraform/$TERRAFORM_VERSION/terraform_${TERRAFORM_VERSION}_linux_amd64.zip && \
+wget -q -O terraform.zip https://releases.hashicorp.com/terraform/$TERRAFORM_VERSION/terraform_${TERRAFORM_VERSION}_linux_amd64.zip && \
   unzip terraform.zip && \
   sudo mv terraform /usr/local/bin/terraform && \
   sudo chmod +x /usr/local/bin/terraform && \
@@ -71,18 +77,30 @@ sudo mv microsoft.gpg /etc/apt/trusted.gpg.d/microsoft.gpg
 
 sudo sh -c 'echo "deb [arch=amd64] https://packages.microsoft.com/repos/vscode stable main" > /etc/apt/sources.list.d/vscode.list'
 
-sudo apt-get update
+sudo apt update
 
-sudo apt-get install -y code
+sudo apt install -y code
+
+## Installing VS Code was erroring about a dependency 'libXss.so'
+sudo apt install -y libgtk2.0-0 libxss1 libasound2
+
+## Install some VS Code extensions
+code --install-extension mauve.terraform
+code --install-extension shakram02.bash-beautify
+code --install-extension PeterJausovec.vscode-docker
+code --install-extension vscjava.vscode-java-pack
+code --install-extension Pivotal.vscode-boot-dev-pack
+code --install-extension robertohuertasm.vscode-icons
+code --install-extension eamodio.gitlens
 
 # Create launcher shortcut
-gsettings set com.canonical.Unity.Launcher favorites "$(gsettings get com.canonical.Unity.Launcher favorites | sed "s/]/,'code.desktop']/")"
+dbus-launch gsettings set com.canonical.Unity.Launcher favorites "$(dbus-launch gsettings get com.canonical.Unity.Launcher favorites | sed "s/]/,'code.desktop']/")"
 
 # Install Apache Bench
 sudo apt install -y apache2-utils
 
 # Install govc
-wget https://github.com/vmware/govmomi/releases/download/v$GOVC_VERSION/govc_linux_amd64.gz && \
+wget -q https://github.com/vmware/govmomi/releases/download/v$GOVC_VERSION/govc_linux_amd64.gz && \
   gunzip govc_linux_amd64.gz && \
   sudo mv govc_linux_amd64 /usr/local/bin/govc && \
   sudo chmod +x /usr/local/bin/govc

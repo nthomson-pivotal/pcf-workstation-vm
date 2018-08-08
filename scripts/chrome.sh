@@ -13,4 +13,9 @@ sudo apt install -y google-chrome-stable
 
 
 # Create launcher shortcut
-gsettings set com.canonical.Unity.Launcher favorites "$(gsettings get com.canonical.Unity.Launcher favorites | sed "s/]/,'google-chrome.desktop']/")"
+dbus-launch gsettings set com.canonical.Unity.Launcher favorites "$(dbus-launch gsettings get com.canonical.Unity.Launcher favorites | sed "s/]/,'google-chrome.desktop']/")"
+
+# Install some bookmarks
+mkdir -p ~/.config/google-chrome/Default
+
+cp /tmp/assets/chrome-bookmarks ~/.config/google-chrome/Default/Bookmarks

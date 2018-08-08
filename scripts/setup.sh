@@ -10,6 +10,7 @@ sed -i "s/^.*requiretty/#Defaults requiretty/" /etc/sudoers
 apt update
 apt full-upgrade -y
 
+# Install anything horrifically common
 apt install -y \
     apt-transport-https \
     curl \

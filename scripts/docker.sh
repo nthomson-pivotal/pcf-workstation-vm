@@ -21,7 +21,7 @@ sudo apt install -y docker-ce
 sudo usermod -aG docker $JUMPBOX_USERNAME
 
 # Install Docker Compose
-wget https://github.com/docker/compose/releases/download/$DOCKER_COMPOSE_VERSION/docker-compose-Linux-x86_64 && \
+wget -q https://github.com/docker/compose/releases/download/$DOCKER_COMPOSE_VERSION/docker-compose-Linux-x86_64 && \
   sudo mv docker-compose-Linux-x86_64 /usr/local/bin/docker-compose && \
   sudo chmod +x /usr/local/bin/docker-compose
 

@@ -1,0 +1,47 @@
+{
+   "roots": {
+      "bookmark_bar": {
+         "children": [ {
+            "date_added": "13178156292294629",
+            "id": "5",
+            "meta_info": {
+               "last_visited_desktop": "13178156292294861"
+            },
+            "name": "Google",
+            "type": "url",
+            "url": "https://www.google.com/"
+         },{
+            "date_added": "13178156292294629",
+            "id": "6",
+            "meta_info": {
+               "last_visited_desktop": "13178156292294861"
+            },
+            "name": "Pivotal",
+            "type": "url",
+            "url": "https://www.pivotal.io/"
+         } ],
+         "date_added": "13178156276923616",
+         "date_modified": "13178156292294629",
+         "id": "1",
+         "name": "Bookmarks bar",
+         "type": "folder"
+      },
+      "other": {
+         "children": [  ],
+         "date_added": "13178156276923622",
+         "date_modified": "0",
+         "id": "2",
+         "name": "Other bookmarks",
+         "type": "folder"
+      },
+      "synced": {
+         "children": [  ],
+         "date_added": "13178156276923622",
+         "date_modified": "0",
+         "id": "3",
+         "name": "Mobile bookmarks",
+         "type": "folder"
+      }
+   },
+   "version": 1
+}

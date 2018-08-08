@@ -10,7 +10,7 @@ DOT_NET_SDK_VERSION=2.1.200
 sudo apt install -y openjdk-8-jdk maven
 
 # Install Spring Tool Suite
-wget https://download.springsource.com/release/STS/$STS_VERSION/dist/e4.8/spring-tool-suite-$STS_VERSION-e4.8.0-linux-gtk-x86_64.tar.gz
+wget -q https://download.springsource.com/release/STS/$STS_VERSION/dist/e4.8/spring-tool-suite-$STS_VERSION-e4.8.0-linux-gtk-x86_64.tar.gz
 tar zxf spring-tool-suite-$STS_VERSION-e4.8.0-linux-gtk-x86_64.tar.gz
 rm spring-tool-suite-$STS_VERSION-e4.8.0-linux-gtk-x86_64.tar.gz
 
@@ -26,9 +26,8 @@ Type=Application
 Categories=Development;IDE;Java;
 EOF
 
-
 # Create launcher shortcut
-gsettings set com.canonical.Unity.Launcher favorites "$(gsettings get com.canonical.Unity.Launcher favorites | sed "s/]/,'STS.desktop']/")"
+dbus-launch gsettings set com.canonical.Unity.Launcher favorites "$(dbus-launch gsettings get com.canonical.Unity.Launcher favorites | sed "s/]/,'STS.desktop']/")"
 
 # Install Golang
 sudo apt install -y golang-go
@@ -48,3 +47,5 @@ rm packages-microsoft-prod.deb
 
 sudo apt update
 sudo apt install -y dotnet-sdk-$DOT_NET_SDK_VERSION
+
+## Note: VSCode is installed in tools.sh

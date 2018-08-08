@@ -52,9 +52,9 @@
     "ssh_password": "{{user `password`}}",
     "ssh_wait_timeout": "20m",
     "shutdown_command": "sudo -S shutdown -P now",
-    "guest_additions_mode": "disable",
     "vm_name": "{{user `vm_name`}}-{{timestamp}}",
     "format": "ova",
+    "guest_additions_path": "/tmp/VBoxGuestAdditions.iso",
     "vboxmanage": [
       [
         "modifyvm",
@@ -67,6 +67,12 @@
         "{{.Name}}",
         "--cpus",
         "{{user `cpu`}}"
+      ],
+      [
+        "modifyvm",
+        "{{.Name}}",
+        "--vram",
+        "64"
       ]
     ]
   }],
@@ -80,12 +86,19 @@
       "script": "scripts/setup.sh"
     },
     {
+      "destination": "/tmp/",
+      "source": "./assets",
+      "type": "file"
+    },
+    {
       "type": "shell",
       "environment_vars": [
         "JUMPBOX_USERNAME={{user `username`}}",
         "PIVNET_TOKEN={{user `pivnet_token`}}"
       ],
       "scripts": [
+        "scripts/vmware.sh",
+        "scripts/virtualbox.sh",
         "scripts/desktop.sh",
         "scripts/tools.sh",
         "scripts/docker.sh",
